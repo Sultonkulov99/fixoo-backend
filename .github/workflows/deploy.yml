@@ -32,7 +32,7 @@ jobs:
               cd fixoo-backend  
               git pull origin main
             fi
-
+  
             echo "Stopping containers"
             docker compose down
 
