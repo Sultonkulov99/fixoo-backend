@@ -29,7 +29,7 @@ jobs:
               git clone https://github.com/Sultonkulov99/fixoo-backend
             else
               echo "Pulling latest changes!"
-              cd fixoo-backend
+              cd fixoo-backend  
               git pull origin main
             fi
 
