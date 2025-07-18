@@ -25,7 +25,7 @@ jobs:
             cd /home/ubuntu/fixoo
 
             if [ ! -d "fixoo-backend/.git" ]; then
-              echo "Cloning repository!"
+              echo "Cloning repository!" 
               git clone https://github.com/Sultonkulov99/fixoo-backend
             else
               echo "Pulling latest changes!"
