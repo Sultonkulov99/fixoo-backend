@@ -5,7 +5,6 @@ import { PrismaService } from 'src/core/database/prisma.service';
 import { SendOtpDto, VerifyOtpDto } from './dto/verification.dto';
 import { generateOtp } from 'src/core/utils/random';
 import { secToMills } from 'src/core/utils/times';
-import { IOTPCachePayload } from 'src/common/types/redis';
 import { SmsService } from 'src/common/services/sms.service';
 
 @Injectable()
@@ -94,7 +93,7 @@ export class VerificationService {
         }
 
         const otp = generateOtp();
-        await this.redis.set(key, JSON.stringify(otp), 12000);
+        await this.redis.set(key, JSON.stringify(otp), secToMills(3600));
         await this.smsService.sendSMS(this.getMessage(type, otp), phone);
         return { message: 'Confirmation code sent' };
     }
@@ -116,7 +115,7 @@ export class VerificationService {
         await this.redis.set(
             this.getKey(type, phone, true),
             JSON.stringify(otp),
-            secToMills(12000),
+            secToMills(3600),
         );
 
         return {
