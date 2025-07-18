@@ -6,3 +6,66 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  MASTER
+  USER
+  ADMIN
+}
+
+model User {
+  id           String     @id @default(uuid())
+  firstName    String
+  lastName     String
+  phone        String     @unique
+  password     String
+  role         UserRole   @default(USER)
+  add_address  String?
+  rates        Rating[]
+  profession   Profession? @relation(fields: [professionId], references: [id])
+  professionId Int?
+  region       Region?     @relation(fields: [regionId], references: [id])
+  regionId     Int?
+  district     District?   @relation(fields: [districtId], references: [id])
+  districtId   Int?
+  createdAt    DateTime   @default(now())
+
+  @@map("users")
+}
+
+model Profession {
+  id    Int @id @default(autoincrement())
+  name  String @unique
+  users User[]
+
+  @@map("professions")
+}
+
+model Region {
+  id        Int     @id @default(autoincrement())
+  name      String     @unique
+  districts District[]
+  users     User[]
+
+  @@map("regions")
+}
+
+model District {
+  id       Int @id @default(autoincrement())
+  name     String
+  region   Region @relation(fields: [regionId], references: [id])
+  regionId Int
+  users    User[]
+
+  @@unique([name, regionId])
+  @@map("districts")
+}
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  rate      Int
+  comment   String
+  userId    String
+  user      User     @relation(references: [id], fields: [userId])
+  createdAt DateTime @default(now())
+}

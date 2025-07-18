@@ -1,12 +1,23 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from './core/prisma/prisma.module';
+import { PrismaModule } from './core/database/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { RedisModule } from './common/redis/redis.module';
+import { VerificationModule } from './modules/verification/verification.module';
+import { ConfigModule } from '@nestjs/config';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, RedisModule],
-  controllers: [],
-  providers: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    PrismaModule, 
+    AuthModule, 
+    RedisModule, 
+    VerificationModule,
+    UsersModule,
+    ProfileModule,
+  ]
 })
-export class AppModule {}
+export class AppModule { }
