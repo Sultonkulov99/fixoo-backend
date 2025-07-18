@@ -20,8 +20,24 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            echo "Creating project folder if it doesn't exist!"
+            mkdir -p /home/ubuntu/fixoo
             cd /home/ubuntu/fixoo
-            git pull origin main
 
+            if [ ! -d "fixoo-backend/.git" ]; then
+              echo "Cloning repository!"
+              git clone https://github.com/Sultonkulov99/fixoo-backend
+            else
+              echo "Pulling latest changes!"
+              cd fixoo-backend
+              git pull origin main
+            fi
+
+            echo "Stopping containers"
             docker compose down
-            docker compose up -d --build
+
+            echo "Building containers"
+            docker compose build 
+
+            echo "Running containers"
+            docker compose up -d 
