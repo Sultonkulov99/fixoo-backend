@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/${{ secrets.SSH_USER }}/fixoo
+            cd /home/ubuntu/fixoo
             git pull origin main
 
             docker compose down
