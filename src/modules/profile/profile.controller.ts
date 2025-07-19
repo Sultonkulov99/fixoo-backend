@@ -4,12 +4,12 @@ import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ProfileService } from './profile.service';
 
 @ApiBearerAuth()
-@Controller('users')
+@Controller('my')
 export class ProfileController {
     constructor(private readonly profileService: ProfileService){}
 
     @UseGuards(AuthGuard)
-    @Get()
+    @Get("profile")
     getProfileInfo(@Req() req : Request){
         return this.profileService.getProfileInfo(req['user'].id)
     }
