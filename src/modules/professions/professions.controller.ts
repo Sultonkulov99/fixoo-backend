@@ -16,12 +16,12 @@ export class ProfessionsController {
         return this.professionService.getProfessions()
     }
 
-    @ApiBearerAuth()
-    @ApiOperation({
-        summary: "ADMIN"
-    })
-    @UseGuards(AuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN)
+    // @ApiBearerAuth()
+    // @ApiOperation({
+    //     summary: "ADMIN"
+    // })
+    // @UseGuards(AuthGuard, RolesGuard)
+    // @Roles(UserRole.ADMIN)
     @Post()
     createProfession(@Body() payload: ProfessionCreateDto) {
         return this.professionService.createProfession(payload)
