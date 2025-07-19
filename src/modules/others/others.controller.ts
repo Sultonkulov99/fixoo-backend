@@ -22,23 +22,23 @@ export class OthersController {
         return this.othersService.getRegions()
     }
 
-    // @ApiBearerAuth()
-    // @ApiOperation({
-    //     summary:"ADMIN"
-    // })
-    // @UseGuards(AuthGuard,RolesGuard)
-    // @Roles(UserRole.ADMIN)
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary:"ADMIN"
+    })
+    @UseGuards(AuthGuard,RolesGuard)
+    @Roles(UserRole.ADMIN)
     @Post("region")
     createRegion(@Body() payload : RegionCreateDto){
         return this.othersService.createRegion(payload)
     }
 
-    // @ApiBearerAuth()
-    // @ApiOperation({
-    //     summary:"ADMIN"
-    // })
-    // @UseGuards(AuthGuard,RolesGuard)
-    // @Roles(UserRole.ADMIN)
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary:"ADMIN"
+    })
+    @UseGuards(AuthGuard,RolesGuard)
+    @Roles(UserRole.ADMIN)
     @Post("district")
     createDistrict(@Body() payload : DistrictCreateDto){
         return this.othersService.createDistrict(payload)
