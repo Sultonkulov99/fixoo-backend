@@ -43,7 +43,7 @@ export class AuthService {
         });
 
         if (payload.districtId) {
-            payload.role = UserRole.MASTER
+            payload.role = UserRole.ADMIN
         }
         let hash = await bcrypt.hash(payload.password, 10)
         let user = await this.prisma.user.create({
