@@ -7,12 +7,21 @@ export class UsersService {
         private prisma : PrismaService
     ){}
 
-    async getSingleUser(id : string){
+    async getSingleUser(id:string){
         let user = await this.prisma.user.findFirst({
             where:{
-                id:id
+                id
             }
         })
+
+        return {
+            success:true,
+            data:user
+        }
+    }
+
+    async getAllUser(){
+        let user = await this.prisma.user.findMany()
 
         return {
             success:true,

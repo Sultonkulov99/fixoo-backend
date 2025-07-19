@@ -5,6 +5,7 @@ import { config } from './common/config/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors()
   app.setGlobalPrefix('api/v1')
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);

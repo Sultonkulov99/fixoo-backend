@@ -23,7 +23,7 @@ export class UsersController {
     @UseGuards(AuthGuard,RolesGuard)
     @Roles(UserRole.ADMIN)
     @Get('all')
-    getAllUser(@Param("id") id : string){
-        return this.userService.getSingleUser(id)
+    getAllUser() {
+        return this.userService.getAllUser()
     }
 }
