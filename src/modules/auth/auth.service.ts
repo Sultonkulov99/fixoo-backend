@@ -35,7 +35,7 @@ export class AuthService {
 
     }
 
-    async register(payload: Required<registerDto>) {
+    async register(payload: registerDto) {
         await this.verificationService.checkConfirmOtp({
             type: EVerificationTypes.REGISTER,
             phone: payload.phone,

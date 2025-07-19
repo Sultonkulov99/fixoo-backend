@@ -17,7 +17,7 @@ export class AuthController {
         summary: 'OTP verification',
     })
     @Post('register')
-    register(@Body() payload: Required<registerDto>) {
+    register(@Body() payload: registerDto) {
         return this.authService.register(payload)
     }
 
