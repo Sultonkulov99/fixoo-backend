@@ -33,9 +33,6 @@ export class registerDto {
     @Matches(/^[a-zA-Z0-9]{6,20}$/)
     password: string
 
-    @ApiProperty({
-        example: "string"
-    })
     @IsEnum(UserRole)
     @IsOptional()
     role?: UserRole
