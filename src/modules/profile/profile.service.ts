@@ -15,24 +15,9 @@ export class ProfileService {
                 phone:true,
                 role:true,
                 add_address:true,
-                profession: {
-                    select: {
-                        id: true,
-                        name: true,
-                    },
-                },
-                region: {
-                    select: {
-                        id: true,
-                        name: true,
-                    },
-                },
-                district: {
-                    select: {
-                        id: true,
-                        name: true,
-                    },
-                },
+                profession:true,
+                region: true,
+                district: true,
             },
         });
 

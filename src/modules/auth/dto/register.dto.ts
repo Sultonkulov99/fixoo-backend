@@ -51,18 +51,17 @@ export class registerDto {
     @IsString()
     add_address?: string
 
-    @ApiProperty({ example: '7c2061f1-fd9a-4b91-92f5-1a1f17846b5a', required: false })
+    @ApiProperty({ example: 'Usta', required: false })
     @IsOptional()
-    @IsUUID()
-    professionId?: number
+    profession?: string
 
-    @ApiProperty({ example: '7c2061f1-fd9a-4b91-92f5-1a1f17846b5a', required: false })
+    @ApiProperty({ example: 'Sirdaryo', required: false })
     @IsOptional()
-    @IsUUID() 
-    regionId?: number
+    @IsString()
+    region?: string
 
-    @ApiProperty({ example: '7c2061f1-fd9a-4b91-92f5-1a1f17846b5a', required: false })
-    @IsUUID()
+    @ApiProperty({ example: 'Guliston', required: false })
     @IsOptional()
-    districtId?: number
+    @IsString()
+    district?: string
 }

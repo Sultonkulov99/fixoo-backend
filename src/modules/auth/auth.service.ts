@@ -42,7 +42,7 @@ export class AuthService {
             otp: payload.otp,
         });
 
-        if (payload.districtId) {
+        if (payload.district) {
             payload.role = UserRole.MASTER
         }
         let hash = await bcrypt.hash(payload.password, 10)
@@ -52,11 +52,11 @@ export class AuthService {
                 lastName: payload.lastName,
                 phone: payload.phone,
                 password: hash,
-                role:payload.role,
+                role:payload.role ? payload.role : "ADMIN",
                 add_address: payload.add_address ?? null, 
-                regionId: payload.regionId ?? null,
-                districtId: payload.districtId ?? null,
-                professionId: payload.professionId ?? null,
+                region: payload.region ?? null,
+                district: payload.district ?? null,
+                profession: payload.profession ?? null,
             }
         })
 

@@ -6,8 +6,6 @@ import { RedisModule } from './common/redis/redis.module';
 import { VerificationModule } from './modules/verification/verification.module';
 import { ConfigModule } from '@nestjs/config';
 import { ProfileModule } from './modules/profile/profile.module';
-import { OthersModule } from './modules/others/others.module';
-import { ProfessionsModule } from './modules/professions/professions.module';
 
 @Module({
   imports: [
@@ -19,9 +17,7 @@ import { ProfessionsModule } from './modules/professions/professions.module';
     RedisModule, 
     VerificationModule,
     UsersModule,
-    ProfileModule,
-    OthersModule,
-    ProfessionsModule,
+    ProfileModule
   ]
 })
 export class AppModule { }

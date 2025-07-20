@@ -22,43 +22,12 @@ model User {
   role         UserRole   @default(USER)
   add_address  String?
   rates        Rating[]
-  profession   Profession? @relation(fields: [professionId], references: [id])
-  professionId Int?
-  region       Region?     @relation(fields: [regionId], references: [id])
-  regionId     Int?
-  district     District?   @relation(fields: [districtId], references: [id])
-  districtId   Int?
+  profession String?
+  region     String?
+  district   String?
   createdAt    DateTime   @default(now())
 
   @@map("users")
-}
-
-model Profession {
-  id    Int @id @default(autoincrement())
-  name  String @unique
-  users User[]
-
-  @@map("professions")
-}
-
-model Region {
-  id        Int     @id @default(autoincrement())
-  name      String     @unique
-  districts District[]
-  users     User[]
-
-  @@map("regions")
-}
-
-model District {
-  id       Int @id @default(autoincrement())
-  name     String
-  region   Region @relation(fields: [regionId], references: [id])
-  regionId Int
-  users    User[]
-
-  @@unique([name, regionId])
-  @@map("districts")
 }
 
 model Rating {
