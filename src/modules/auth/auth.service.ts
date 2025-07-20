@@ -52,7 +52,7 @@ export class AuthService {
                 lastName: payload.lastName,
                 phone: payload.phone,
                 password: hash,
-                role:payload.role ? payload.role : "ADMIN",
+                role:payload.role ? payload.role : "USER",
                 add_address: payload.add_address ?? null, 
                 region: payload.region ?? null,
                 district: payload.district ?? null,
