@@ -36,14 +36,13 @@ export class VerificationService {
     private getMessage(type: EVerificationTypes, otp: string) {
         switch (type) {
             case EVerificationTypes.REGISTER:
-                return `Fixoo platformasida telefoningizni o'zgartirish uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
+                return `Fixoo platformasidan ro'yxatdan o'tish uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
             case EVerificationTypes.RESET_PASSWORD:
                 return `Fixoo platformasida parolingizni tiklash uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
             case EVerificationTypes.EDIT_PHONE:
-                return `Fixoo platformasidan ro'yxatdan o'tish uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
+                return `Fixoo platformasida telefoningizni o'zgartirish uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
         }
     }
-
     private async throwIfUserExists(phone: string) {
         const user = await this.prisma.user.findUnique({
             where: {
