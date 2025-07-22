@@ -36,11 +36,11 @@ export class VerificationService {
     private getMessage(type: EVerificationTypes, otp: string) {
         switch (type) {
             case EVerificationTypes.REGISTER:
-                return `Bu Eskiz dan test`;
+                return `Fixoo platformasida telefoningizni o'zgartirish uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
             case EVerificationTypes.RESET_PASSWORD:
                 return `Fixoo platformasida parolingizni tiklash uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
             case EVerificationTypes.EDIT_PHONE:
-                return `Fixoo platformasida telefoningizni o'zgartirish uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
+                return `Fixoo platformasidan ro'yxatdan o'tish uchun tasdiqlash kodi: ${otp}. Kodni hech kimga bermang!`;
         }
     }
 
