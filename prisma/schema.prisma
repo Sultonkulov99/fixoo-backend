@@ -14,18 +14,18 @@ enum UserRole {
 }
 
 model User {
-  id           String     @id @default(uuid())
-  firstName    String
-  lastName     String
-  phone        String     @unique
-  password     String
-  role         UserRole   @default(USER)
-  add_address  String?
-  rates        Rating[]
-  profession String?
-  region     String?
-  district   String?
-  createdAt    DateTime   @default(now())
+  id          String   @id @default(uuid())
+  firstName   String
+  lastName    String
+  phone       String   @unique
+  password    String
+  role        UserRole @default(USER)
+  add_address String?
+  rates       Rating[]
+  profession  String?
+  region      String?
+  district    String?
+  createdAt   DateTime @default(now())
 
   @@map("users")
 }

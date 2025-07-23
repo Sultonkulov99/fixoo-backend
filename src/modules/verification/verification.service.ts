@@ -92,7 +92,7 @@ export class VerificationService {
         }
 
         const otp = generateOtp();
-        await this.redis.set(key, JSON.stringify(otp), secToMills(3600));
+        await this.redis.set(key, JSON.stringify(otp), secToMills(60));
         await this.smsService.sendSMS(this.getMessage(type, otp), phone);
         return { message: 'Confirmation code sent' };
     }
@@ -114,7 +114,7 @@ export class VerificationService {
         await this.redis.set(
             this.getKey(type, phone, true),
             JSON.stringify(otp),
-            secToMills(3600),
+            secToMills(120),
         );
 
         return {

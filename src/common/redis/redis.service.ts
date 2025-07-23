@@ -6,7 +6,7 @@ export class RedisService implements OnModuleInit{
     private client : Redis
     async onModuleInit() {
         this.client = new Redis({
-            host:'redis'
+            host: process.env.REDIS_HOST || "redis"
         })
     }
 
@@ -15,7 +15,7 @@ export class RedisService implements OnModuleInit{
     }
 
     async get(key:string){
-        return await this.client.get(key)
+        return await this.client.get(key) 
     }
 
     async del(key:string){
