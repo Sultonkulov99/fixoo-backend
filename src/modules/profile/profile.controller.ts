@@ -78,7 +78,7 @@ export class ProfileController {
                     type: 'array',
                     items: {
                         type: 'string',
-                        format: 'binary', // 👈 bu fayl input hosil qiladi
+                        format: 'binary',
                     },
                 },
             },
@@ -102,7 +102,7 @@ export class ProfileController {
                 return await this.profileService.createFiles(
                     req['user'].id,
                     fileType,
-                    file.path,
+                    file.filename,
                 );
             }),
         );
