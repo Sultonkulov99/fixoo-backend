@@ -22,12 +22,24 @@ model User {
   role        UserRole @default(USER)
   add_address String?
   rates       Rating[]
+  files       Files[]
   profession  String?
   region      String?
   district    String?
   createdAt   DateTime @default(now())
 
   @@map("users")
+}
+
+model Files {
+  id        String   @id @default(ulid())
+  fileType  String
+  fileUrl   String
+  userId    String
+  user      User     @relation(references: [id], fields: [userId])
+  createdAt DateTime @default(now())
+
+  @@map("files")
 }
 
 model Rating {

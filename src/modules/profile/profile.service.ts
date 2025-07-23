@@ -26,4 +26,21 @@ export class ProfileService {
             data: profile
         }
     }
+
+   async createFiles(userId: string, fileType: string, fileUrl: string) {
+    const created = await this.prisma.files.create({
+        data: {
+            fileType,
+            fileUrl,
+            userId,
+        },
+    });
+
+    return {
+        id: created.id,
+        fileType: created.fileType,
+        fileUrl: created.fileUrl,
+    };
+}
+
 }

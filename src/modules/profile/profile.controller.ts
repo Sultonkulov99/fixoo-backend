@@ -1,17 +1,115 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UnsupportedMediaTypeException, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from 'src/common/guards/jwt-auth.gurads';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { ProfileService } from './profile.service';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Roles } from 'src/common/decorators/role';
+import { UserRole } from '@prisma/client';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+import { diskStorage } from 'multer';
+import { v4 as uuidv4 } from "uuid"
 
 @ApiBearerAuth()
-@Controller('my')
+@Controller()
 export class ProfileController {
-    constructor(private readonly profileService: ProfileService){}
+    constructor(private readonly profileService: ProfileService) { }
 
     @UseGuards(AuthGuard)
-    @Get("profile")
-    getProfileInfo(@Req() req : Request){
+    @Get("my/profile")
+    getProfileInfo(@Req() req: Request) {
         return this.profileService.getProfileInfo(req['user'].id)
     }
 
+    @ApiOperation({
+        summary:"MASTER"
+    })
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(UserRole.MASTER)
+    @Post("profile/files")
+    @UseInterceptors(
+        AnyFilesInterceptor({
+            storage: diskStorage({
+                destination: (req, file, cb) => {
+                    let folder = './uploads/others';
+                    if (file.mimetype.startsWith('image/')) folder = './uploads/images';
+                    else if (file.mimetype.startsWith('video/')) folder = './uploads/videos';
+                    else if (file.mimetype === 'text/plain') folder = './uploads/texts';
+                    else if (
+                        file.mimetype.includes('pdf') ||
+                        file.mimetype.includes('msword')
+                    )
+                        folder = './uploads/docs';
+                    cb(null, folder);
+                },
+                filename: (req, file, cb) => {
+                    const filename = uuidv4() + extname(file.originalname);
+                    cb(null, filename);
+                },
+            }),
+            fileFilter: (req, file, cb) => {
+                const allowed = [
+                    'image/jpeg',
+                    'image/jpg',
+                    'image/png',
+                    'video/mp4',
+                    'text/plain',
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                ];
+                if (!allowed.includes(file.mimetype)) {
+                    return cb(
+                        new UnsupportedMediaTypeException('Fayl turi ruxsat etilmagan'),
+                        false,
+                    );
+                }
+                cb(null, true);
+            },
+        }),
+    )
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        description: 'Fayllarni yuborish: rasm, video, text, pdf va h.k.',
+        schema: {
+            type: 'object',
+            properties: {
+                files: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        format: 'binary', // 👈 bu fayl input hosil qiladi
+                    },
+                },
+            },
+        },
+    })
+    async createFiles(
+        @Req() req: Request,
+        @UploadedFiles() files: Express.Multer.File[]
+    ) {
+        const savedFiles = await Promise.all(
+            files.map(async (file) => {
+                let fileType: string;
+
+                if (file.mimetype.startsWith('image/')) fileType = 'image';
+                else if (file.mimetype.startsWith('video/')) fileType = 'video';
+                else if (file.mimetype === 'text/plain') fileType = 'text';
+                else if (file.mimetype.includes('pdf')) fileType = 'pdf';
+                else if (file.mimetype.includes('msword')) fileType = 'doc';
+                else fileType = 'other';
+
+                return await this.profileService.createFiles(
+                    req['user'].id,
+                    fileType,
+                    file.path,
+                );
+            }),
+        );
+
+        return {
+            success: true,
+            files: savedFiles,
+        };
+    }
 }
