@@ -10,6 +10,7 @@ export class UsersService {
 
     async getSingelMaster(query: MasterQueryDto) {
         let where = {}
+        where['role'] = "MASTER" 
         if (query.firstName) {
             where['firstName'] = query.firstName.trim()
         }

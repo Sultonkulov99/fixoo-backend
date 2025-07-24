@@ -9,13 +9,14 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from "uuid"
+import fs from 'fs';
 
 @Controller()
 export class ProfileController {
     constructor(private readonly profileService: ProfileService) { }
 
     @Get(":fileType/:fileName")
-    getViewFile( ) {}
+    getViewFile() { }
 
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
@@ -33,7 +34,7 @@ export class ProfileController {
     getFiles(@Req() req: Request) {
         return this.profileService.getFiles(req['user'].id)
     }
-    
+
     @ApiBearerAuth()
     @ApiOperation({
         summary: "MASTER"
@@ -54,6 +55,9 @@ export class ProfileController {
                         file.mimetype.includes('msword')
                     )
                         folder = './uploads/docs';
+                    if (!fs.existsSync(folder)) {
+                        fs.mkdirSync(folder, { recursive: true });
+                    }
                     cb(null, folder);
                 },
                 filename: (req, file, cb) => {
