@@ -44,6 +44,9 @@ export class ProfileController {
     @Post("api/v1/profile/files")
     @UseInterceptors(
         AnyFilesInterceptor({
+            limits: {
+                fileSize: 100 * 1024 * 1024,
+            },
             storage: diskStorage({
                 destination: (req, file, cb) => {
                     let folder = './uploads/others';

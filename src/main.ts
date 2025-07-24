@@ -2,14 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import { config } from './common/config/swagger';
-import * as bodyParser from 'body-parser';
+import { json, urlencoded } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors()
 
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.use(json({ limit: '100mb' }));
+  app.use(urlencoded({ extended: true, limit: '100mb' }));
 
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
