@@ -16,7 +16,12 @@ export class ProfileController {
     constructor(private readonly profileService: ProfileService) { }
 
     @Get(":fileType/:fileName")
-    getViewFile() { }
+    getViewFile() { 
+        return {
+            success: true,
+            message: "Faylni ko‘rish uchun /api/v1/profile/files endpointidan foydalaning"
+        }
+    }
 
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
@@ -61,11 +66,11 @@ export class ProfileController {
                     if (!fs.existsSync(folder)) {
                         fs.mkdirSync(folder, { recursive: true });
                     }
-                    cb(null, folder);
+                    return cb(null, folder);
                 },
                 filename: (req, file, cb) => {
                     const filename = uuidv4() + extname(file.originalname);
-                    cb(null, filename);
+                    return cb(null, filename);
                 },
             }),
             fileFilter: (req, file, cb) => {
@@ -85,7 +90,7 @@ export class ProfileController {
                         false,
                     );
                 }
-                cb(null, true);
+                return cb(null, true);
             },
         }),
     )
