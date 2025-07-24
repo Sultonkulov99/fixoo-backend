@@ -94,7 +94,10 @@ export class UsersService {
                 id: true,
                 firstName: true,
                 lastName: true,
-                phone: true
+                phone: true,
+                profession:true,
+                district:true,
+                region:true
             }
         })
 
