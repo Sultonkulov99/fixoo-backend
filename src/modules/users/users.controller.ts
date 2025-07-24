@@ -11,7 +11,7 @@ import { MasterQueryDto } from './dto/master.query.dto';
 export class UsersController {
     constructor(private readonly userService: UsersService) { }
 
-    @Get('mentors')
+    @Get('masters')
     getSingelMaster(@Query() query : MasterQueryDto){
         return this.userService.getSingelMaster(query)
     }
