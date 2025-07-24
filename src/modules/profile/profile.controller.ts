@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UnsupportedMediaTypeException, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, InternalServerErrorException, Param, Post, Req, UnauthorizedException, UnsupportedMediaTypeException, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from 'src/common/guards/jwt-auth.gurads';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { ProfileService } from './profile.service';
@@ -16,7 +16,7 @@ export class ProfileController {
     constructor(private readonly profileService: ProfileService) { }
 
     @Get(":fileType/:fileName")
-    getViewFile() { 
+    getViewFile() {
         return {
             success: true,
             message: "Faylni ko‘rish uchun /api/v1/profile/files endpointidan foydalaning"
@@ -114,28 +114,41 @@ export class ProfileController {
         @Req() req: Request,
         @UploadedFiles() files: Express.Multer.File[]
     ) {
-        const savedFiles = await Promise.all(
-            files.map(async (file) => {
-                let fileType: string;
+        if (!req['user'] || !req['user'].id) {
+            throw new UnauthorizedException('Foydalanuvchi aniqlanmadi');
+        }
 
-                if (file.mimetype.startsWith('image/')) fileType = 'image';
-                else if (file.mimetype.startsWith('video/')) fileType = 'video';
-                else if (file.mimetype === 'text/plain') fileType = 'text';
-                else if (file.mimetype.includes('pdf')) fileType = 'pdf';
-                else if (file.mimetype.includes('msword')) fileType = 'doc';
-                else fileType = 'other';
+        if (!files || !files.length) {
+            throw new BadRequestException('Hech qanday fayl yuborilmadi');
+        }
 
-                return await this.profileService.createFiles(
-                    req['user'].id,
-                    fileType,
-                    file.filename,
-                );
-            }),
-        );
+        try {
+            const savedFiles = await Promise.all(
+                files.map(async (file) => {
+                    let fileType: string;
 
-        return {
-            success: true,
-            files: savedFiles,
-        };
+                    if (file.mimetype.startsWith('image/')) fileType = 'image';
+                    else if (file.mimetype.startsWith('video/')) fileType = 'video';
+                    else if (file.mimetype === 'text/plain') fileType = 'text';
+                    else if (file.mimetype.includes('pdf')) fileType = 'pdf';
+                    else if (file.mimetype.includes('msword')) fileType = 'doc';
+                    else fileType = 'other';
+
+                    return await this.profileService.createFiles(
+                        req['user'].id,
+                        fileType,
+                        file.filename,
+                    );
+                }),
+            );
+
+            return {
+                success: true,
+                files: savedFiles,
+            };
+        } catch (err) {
+            console.error('Xatolik:', err);
+            throw new InternalServerErrorException('Faylni yuklashda xatolik');
+        }
     }
 }
