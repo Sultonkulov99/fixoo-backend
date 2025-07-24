@@ -5,7 +5,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { EVerificationTypes } from 'src/common/types/verification';
 
 @ApiTags('Verification')
-@Controller('verification')
+@Controller('api/v1/verification')
 export class VerificationController {
   constructor(private readonly verificationService: VerificationService) {}
 

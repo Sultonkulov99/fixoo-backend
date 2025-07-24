@@ -7,7 +7,7 @@ import { ResetPasswordDto } from './dto/verification.dto';
 import { ApiOperation } from '@nestjs/swagger';
 import { EVerificationTypes } from 'src/common/types/verification';
 
-@Controller('auth')
+@Controller('api/v1/auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UnsupportedMediaTypeException, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UnsupportedMediaTypeException, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from 'src/common/guards/jwt-auth.gurads';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { ProfileService } from './profile.service';
@@ -10,23 +10,37 @@ import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from "uuid"
 
-@ApiBearerAuth()
 @Controller()
 export class ProfileController {
     constructor(private readonly profileService: ProfileService) { }
 
+    @Get(":fileType/:fileName")
+    getViewFile( ) {}
+
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
-    @Get("my/profile")
+    @Get("api/v1/my/profile")
     getProfileInfo(@Req() req: Request) {
         return this.profileService.getProfileInfo(req['user'].id)
     }
 
+    @ApiBearerAuth()
     @ApiOperation({
-        summary:"MASTER"
+        summary: "MASTER"
+    })
+    @UseGuards(AuthGuard)
+    @Get("api/v1/my/files")
+    getFiles(@Req() req: Request) {
+        return this.profileService.getFiles(req['user'].id)
+    }
+    
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary: "MASTER"
     })
     @UseGuards(AuthGuard, RolesGuard)
     @Roles(UserRole.MASTER)
-    @Post("profile/files")
+    @Post("api/v1/profile/files")
     @UseInterceptors(
         AnyFilesInterceptor({
             storage: diskStorage({

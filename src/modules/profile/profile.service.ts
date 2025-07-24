@@ -27,6 +27,17 @@ export class ProfileService {
         }
     }
 
+    async getFiles(id:string){
+        let files = await this.prisma.files.findMany({
+            where:{userId:id}
+        })
+
+        return {
+            success:true,
+            data:files
+        }
+    }
+
    async createFiles(userId: string, fileType: string, fileUrl: string) {
     const created = await this.prisma.files.create({
         data: {
