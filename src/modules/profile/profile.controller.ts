@@ -9,7 +9,7 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from "uuid"
-import fs from 'fs';
+import * as fs from 'fs';
 
 @Controller()
 export class ProfileController {
