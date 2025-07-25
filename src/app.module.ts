@@ -8,34 +8,20 @@ import { ConfigModule } from '@nestjs/config';
 import { ProfileModule } from './modules/profile/profile.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FilesModule } from './modules/files/files.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads','videos'),
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads','images'),
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads','texts'),
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads','docs'),
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads','others'),
-    }), 
-
     PrismaModule, 
     AuthModule, 
     RedisModule, 
     VerificationModule,
     UsersModule,
-    ProfileModule
+    ProfileModule,
+    FilesModule
   ]
 })
 export class AppModule { }
