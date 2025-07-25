@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, InternalServerErrorException, Param, Post, Req, UnauthorizedException, UnsupportedMediaTypeException, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Controller, Get, InternalServerErrorException, Param, Post, Req, Res, UnauthorizedException, UnsupportedMediaTypeException, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from 'src/common/guards/jwt-auth.gurads';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { ProfileService } from './profile.service';
@@ -10,17 +10,20 @@ import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from "uuid"
 import * as fs from 'fs';
+import { Request, Response } from 'express';
 
 @Controller()
 export class ProfileController {
     constructor(private readonly profileService: ProfileService) { }
 
     @Get(":fileType/:fileName")
-    getViewFile(@Param("fileType") fileType: string, @Param("fileName") fileName: string) {
-        return {
-            success: true,
-            url:`https://fixoo.uz/${fileName}`
-        }
+    async getViewFile(
+        @Param("fileType") fileType: string, 
+        @Param("fileName") fileName: string,
+        @Res() res: Response
+    ){
+        const stream = await this.profileService.getFileStream(fileType, fileName)
+        return stream.pipe(res);
     }
 
     @ApiBearerAuth()
@@ -59,8 +62,7 @@ export class ProfileController {
                     else if (file.mimetype.startsWith('video/')) folder = './uploads/videos';
                     else if (file.mimetype === 'text/plain') folder = './uploads/texts';
                     else if (
-                        file.mimetype.includes('pdf') ||
-                        file.mimetype.includes('msword')
+                        file.mimetype.includes('pdf')
                     )
                         folder = './uploads/docs';
                     if (!fs.existsSync(folder)) {
@@ -80,8 +82,7 @@ export class ProfileController {
                     'image/png',
                     'video/mp4',
                     'text/plain',
-                    'application/pdf',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/pdf'
                 ];
                 if (!allowed.includes(file.mimetype)) {
                     return cb(
