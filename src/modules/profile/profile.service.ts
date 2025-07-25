@@ -7,7 +7,7 @@ import { PrismaService } from 'src/core/database/prisma.service';
 export class ProfileService {
     constructor(private prisma: PrismaService) { }
 
-    private readonly basePath = join(process.cwd(), 'uploads');
+    private readonly basePath = join(__dirname, '..', '..', '..', 'uploads');
 
     private readonly folderMap = {
         image: 'images',

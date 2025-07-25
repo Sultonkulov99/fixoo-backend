@@ -6,7 +6,7 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/role';
 import { UserRole } from '@prisma/client';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { extname } from 'path';
+import { extname, join } from 'path';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from "uuid"
 import * as fs from 'fs';
@@ -57,14 +57,15 @@ export class ProfileController {
             },
             storage: diskStorage({
                 destination: (req, file, cb) => {
-                    let folder = './uploads/others';
-                    if (file.mimetype.startsWith('image/')) folder = './uploads/images';
-                    else if (file.mimetype.startsWith('video/')) folder = './uploads/videos';
-                    else if (file.mimetype === 'text/plain') folder = './uploads/texts';
+                    const uploadsRoot = join(__dirname, '..', '..', '..', 'uploads');
+                    let folder = join(uploadsRoot, 'others');;
+                    if (file.mimetype.startsWith('image/')) folder = join(uploadsRoot, 'images');
+                    else if (file.mimetype.startsWith('video/')) folder = join(uploadsRoot, 'videos');
+                    else if (file.mimetype === 'text/plain') folder = join(uploadsRoot, 'texts');
                     else if (
                         file.mimetype.includes('pdf')
                     )
-                        folder = './uploads/docs';
+                        folder = join(uploadsRoot, 'docs');
                     if (!fs.existsSync(folder)) {
                         fs.mkdirSync(folder, { recursive: true });
                     }
