@@ -16,10 +16,10 @@ export class ProfileController {
     constructor(private readonly profileService: ProfileService) { }
 
     @Get(":fileType/:fileName")
-    getViewFile() {
+    getViewFile(@Param("fileType") fileType: string, @Param("fileName") fileName: string) {
         return {
             success: true,
-            message: "Faylni ko‘rish uchun /api/v1/profile/files endpointidan foydalaning"
+            url:`https://fixoo.uz/${fileType}/${fileName}`
         }
     }
 
@@ -81,7 +81,6 @@ export class ProfileController {
                     'video/mp4',
                     'text/plain',
                     'application/pdf',
-                    'application/msword',
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 ];
                 if (!allowed.includes(file.mimetype)) {
@@ -131,7 +130,6 @@ export class ProfileController {
                     else if (file.mimetype.startsWith('video/')) fileType = 'video';
                     else if (file.mimetype === 'text/plain') fileType = 'text';
                     else if (file.mimetype.includes('pdf')) fileType = 'pdf';
-                    else if (file.mimetype.includes('msword')) fileType = 'doc';
                     else fileType = 'other';
 
                     return await this.profileService.createFiles(
