@@ -19,7 +19,7 @@ export class ProfileController {
     getViewFile(@Param("fileType") fileType: string, @Param("fileName") fileName: string) {
         return {
             success: true,
-            url:`https://fixoo.uz/${fileType}/${fileName}`
+            url:`https://fixoo.uz/${fileName}`
         }
     }
 

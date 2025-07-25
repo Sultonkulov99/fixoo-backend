@@ -16,23 +16,18 @@ import { join } from 'path';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads','videos'),
-      serveRoot: '/video',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads','images'),
-      serveRoot: '/image',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads','texts'),
-      serveRoot: '/text',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads','docs'),
-      serveRoot: '/pdf',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads','others'),
-      serveRoot: '/other',
     }), 
 
     PrismaModule, 
