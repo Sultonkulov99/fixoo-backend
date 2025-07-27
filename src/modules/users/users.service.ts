@@ -10,13 +10,7 @@ export class UsersService {
 
     async getSingelMaster(query: MasterQueryDto) {
         let where = {}
-        where['role'] = "MASTER" 
-        if (query.firstName) {
-            where['firstName'] = query.firstName.trim()
-        }
-        if (query.lastName) {
-            where['lastName'] = query.lastName.trim()
-        }
+        where['role'] = "MASTER"
         if (query.profession) {
             where['profession'] = query.profession.trim()
         }
@@ -38,6 +32,7 @@ export class UsersService {
                     id:true,
                     firstName:true,
                     lastName:true,
+                    phone:true,
                     profession:true,
                     region:true,
                     district:true,

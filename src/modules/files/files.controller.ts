@@ -80,7 +80,7 @@ export class FilesController {
                 ];
                 if (!allowed.includes(file.mimetype)) {
                     return cb(
-                        new UnsupportedMediaTypeException('Fayl turi ruxsat etilmagan'),
+                        new UnsupportedMediaTypeException('File type not allowed'),
                         false,
                     );
                 }
@@ -90,7 +90,7 @@ export class FilesController {
     )
     @ApiConsumes('multipart/form-data')
     @ApiBody({
-        description: 'Fayllarni yuborish: rasm, video, text, pdf va h.k.',
+        description: 'Send files: image, video, text, pdf, etc.',
         schema: {
             type: 'object',
             properties: {
@@ -109,11 +109,11 @@ export class FilesController {
         @UploadedFiles() files: Express.Multer.File[]
     ) {
         if (!req['user'] || !req['user'].id) {
-            throw new UnauthorizedException('Foydalanuvchi aniqlanmadi');
+            throw new UnauthorizedException('User not identified');
         }
 
         if (!files || !files.length) {
-            throw new BadRequestException('Hech qanday fayl yuborilmadi');
+            throw new BadRequestException('No file sent');
         }
 
         try {
@@ -140,8 +140,7 @@ export class FilesController {
                 files: savedFiles,
             };
         } catch (err) {
-            console.error('Xatolik:', err);
-            throw new InternalServerErrorException('Faylni yuklashda xatolik');
+            throw new InternalServerErrorException('Error loading file');
         }
     }
 

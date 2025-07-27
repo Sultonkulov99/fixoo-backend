@@ -20,13 +20,13 @@ export class FilesService {
     async getFileStream(fileType: string, filename: string): Promise<ReadStream> {
         const folder = this.folderMap[fileType];
         if (!folder) {
-            throw new BadRequestException('Noto‘g‘ri fileType');
+            throw new BadRequestException('Invalid fileType');
         }
 
         const filePath = join(this.basePath, folder, filename);
 
         if (!existsSync(filePath)) {
-            throw new NotFoundException('Fayl topilmadi');
+            throw new NotFoundException('File not found');
         }
 
         return createReadStream(filePath);
