@@ -1,9 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { Type } from "class-transformer"
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsPhoneNumber, IsString, Length } from "class-validator"
 
-export class MasterQueryDto {
 
+export class UpdateProfileDto {
     @ApiProperty({
         required: false,
     })
@@ -42,14 +41,8 @@ export class MasterQueryDto {
     @ApiProperty({
         required: false,
     })
-    @Type(() => Number)
+    @IsString()
     @IsOptional()
-    limit?: number
+    add_address?: string
 
-    @ApiProperty({
-        required: false,
-    })
-    @Type(() => Number)
-    @IsOptional()
-    page?: number
 }

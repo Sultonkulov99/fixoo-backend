@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { createReadStream, existsSync, ReadStream} from 'fs';
+import { createReadStream, existsSync, ReadStream } from 'fs';
 import { join } from 'path';
 import { PrismaService } from 'src/core/database/prisma.service';
+import { UpdateProfileDto } from './dto/update.profile.dto';
 
 @Injectable()
 export class ProfileService {
@@ -26,6 +27,56 @@ export class ProfileService {
         return {
             success: true,
             data: profile
+        }
+    }
+
+    async updateProfile(id: string, payload: UpdateProfileDto){
+        let profile = await this.prisma.user.findFirst({
+            where:{id}
+        })
+
+        if(!profile){
+            throw new NotFoundException("Master or Client not found!")
+        }
+
+        await this.prisma.user.update({
+            where:{id},
+            data:payload
+        })
+
+        return {
+            success:true,
+            message:"Profile updated successfully"
+        }
+    }
+
+    async delete(id: string) {
+        let masterOrClient = await this.prisma.user.findFirst({
+            where: {
+                id,
+                OR: [
+                    { role: "MASTER" },
+                    { role: "USER" }
+                ]
+            }
+        });
+
+        if (!masterOrClient) {
+            return {
+                success: false,
+                message: "masterOrClient not found"
+            }
+        }
+
+        await this.prisma.user.delete({
+            where: {
+                id
+            }
+        })
+
+        return {
+            success: true,
+            message: "masterOrClient deleted successfully"
         }
     }
 

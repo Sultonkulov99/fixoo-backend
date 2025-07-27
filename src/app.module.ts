@@ -6,9 +6,8 @@ import { RedisModule } from './common/redis/redis.module';
 import { VerificationModule } from './modules/verification/verification.module';
 import { ConfigModule } from '@nestjs/config';
 import { ProfileModule } from './modules/profile/profile.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { FilesModule } from './modules/files/files.module';
+import { MastersModule } from './modules/masters/masters.module';
 
 @Module({
   imports: [
@@ -21,7 +20,8 @@ import { FilesModule } from './modules/files/files.module';
     VerificationModule,
     UsersModule,
     ProfileModule,
-    FilesModule
+    MastersModule,
+    FilesModule,
   ]
 })
 export class AppModule { }
