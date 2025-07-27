@@ -51,6 +51,7 @@ export class ProfileService {
     }
 
     async delete(id: string) {
+        console.log("Deleting user with ID:", id);
         let masterOrClient = await this.prisma.user.findFirst({
             where: {
                 id,
@@ -61,6 +62,7 @@ export class ProfileService {
             }
         });
 
+        console.log(masterOrClient)
         if (!masterOrClient) {
             return {
                 success: false,

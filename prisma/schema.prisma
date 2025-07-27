@@ -36,7 +36,7 @@ model Files {
   fileType  String
   fileUrl   String
   userId    String
-  user      User     @relation(references: [id], fields: [userId])
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@map("files")
