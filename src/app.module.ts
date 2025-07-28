@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ProfileModule } from './modules/profile/profile.module';
 import { FilesModule } from './modules/files/files.module';
 import { MastersModule } from './modules/masters/masters.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MastersModule } from './modules/masters/masters.module';
     UsersModule,
     ProfileModule,
     MastersModule,
+    OrdersModule,
     FilesModule,
   ]
 })

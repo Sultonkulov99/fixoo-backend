@@ -14,19 +14,21 @@ enum UserRole {
 }
 
 model User {
-  id          String   @id @default(uuid())
-  firstName   String
-  lastName    String
-  phone       String   @unique
-  password    String
-  role        UserRole @default(USER)
-  add_address String?
-  rates       Rating[]
-  files       Files[]
-  profession  String?
-  region      String?
-  district    String?
-  createdAt   DateTime @default(now())
+  id           String   @id @default(uuid())
+  firstName    String
+  lastName     String
+  phone        String   @unique
+  password     String
+  role         UserRole @default(USER)
+  add_address  String?
+  rates        Rating[]
+  files        Files[]
+  profession   String?
+  region       String?
+  district     String?
+  masterOrders Orders[] @relation("MasterOrders")
+  clientOrders Orders[] @relation("ClientOrders")
+  createdAt    DateTime @default(now())
 
   @@map("users")
 }
@@ -40,6 +42,19 @@ model Files {
   createdAt DateTime @default(now())
 
   @@map("files")
+}
+
+model Orders {
+  id String @id @default(ulid())
+
+  masterId String?
+  master   User?   @relation("MasterOrders", fields: [masterId], references: [id], onDelete: SetNull)
+  clientId String?
+  client   User?   @relation("ClientOrders", fields: [clientId], references: [id], onDelete: SetNull)
+  address String
+  description String
+
+  @@map("orders")
 }
 
 model Rating {
