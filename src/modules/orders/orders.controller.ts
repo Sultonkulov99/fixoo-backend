@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { AuthGuard } from 'src/common/guards/jwt-auth.gurads';
 import { RolesGuard } from 'src/common/guards/roles.guard';
@@ -18,6 +18,18 @@ export class OrdersController {
     })
     @UseGuards(AuthGuard, RolesGuard)
     @Roles(UserRole.USER)
+    @Get("orders/history")
+    getHistory(@Req() req: Request,){
+        return this.ordersService.getHistory(req['user'].id)
+    }
+
+
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary: 'CLIENT'
+    })
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(UserRole.USER)
     @Post("orders")
     createOrder(
         @Req() req: Request,
@@ -25,4 +37,6 @@ export class OrdersController {
     ) {
         return this.ordersService.createOrder(req['user'].id, payload)
     }
+
+    
 }

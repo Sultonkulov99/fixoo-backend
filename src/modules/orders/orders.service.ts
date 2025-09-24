@@ -6,6 +6,28 @@ import { CreateOrderDto } from './dto/create.orders.dto';
 export class OrdersService {
     constructor(private prisma : PrismaService){}
 
+    async getHistory(clientId : string){
+        const client = await this.prisma.user.findFirst({
+            where:{id:clientId}
+        })
+        if(!client){
+            throw new NotFoundException("Client not found")
+        }
+
+        const orders = await this.prisma.orders.findMany({
+            where:{id:clientId},
+            include:{
+                client: true,
+                master: true
+            }
+        })
+
+        return {
+            success : true,
+            data: orders
+        }
+    }
+
     async createOrder(clientId:string,payload:CreateOrderDto){
         const client = await this.prisma.user.findFirst({
             where:{id:clientId}
