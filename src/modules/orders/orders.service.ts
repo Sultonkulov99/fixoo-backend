@@ -10,12 +10,12 @@ export class OrdersService {
         const client = await this.prisma.user.findFirst({
             where:{id:clientId}
         })
-        if(!client){
+        if(!client){ 
             throw new NotFoundException("Client not found")
         }
 
         const orders = await this.prisma.orders.findMany({
-            where:{id:clientId},
+            where:{clientId:clientId},
             include:{
                 client: true,
                 master: true

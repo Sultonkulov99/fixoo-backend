@@ -78,6 +78,7 @@ export class FilesController {
                     'text/plain',
                     'application/pdf'
                 ];
+                // @ts-ignore
                 if (!allowed.includes(file.mimetype)) {
                     return cb(
                         new UnsupportedMediaTypeException('File type not allowed'),
