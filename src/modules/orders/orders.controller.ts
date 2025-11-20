@@ -29,6 +29,17 @@ export class OrdersController {
         summary: 'CLIENT'
     })
     @UseGuards(AuthGuard, RolesGuard)
+    @Roles(UserRole.MASTER)
+    @Get("Master/orders/history")
+    getHistory2(@Req() req: Request,){
+        return this.ordersService.getMasterOrders(req['user'].id)
+    }
+
+    @ApiBearerAuth()
+    @ApiOperation({
+        summary: 'CLIENT'
+    })
+    @UseGuards(AuthGuard, RolesGuard)
     @Roles(UserRole.USER)
     @Post("orders")
     createOrder(

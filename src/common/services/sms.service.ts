@@ -47,7 +47,7 @@ export class SmsService {
         {
           headers: {
             Authorization: 'Bearer ' + this.token,
-          },
+          }, 
         },
       );
 

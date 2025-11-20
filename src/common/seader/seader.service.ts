@@ -24,20 +24,20 @@ export class SeederService implements OnModuleInit {
         });
 
         await this.prisma.user.upsert({
-            where: { phone: "+998911234567" },
+            where: { phone: "+998903641207" },
             create: {
-                firstName: "Rustam",
-                lastName: "Qodirov",
-                phone: "+998911234567",
+                firstName: "Faxriddin",
+                lastName: "Asqaraliyev",
+                phone: "+998903641207",
                 password,
                 role: UserRole.MASTER,
-                region: "Samarqand",
-                district: "Bulungur",
-                profession: "Santexnik"
+                region: "namangan",
+                district: "namangan_shahar",
+                profession: "electrician",
+                add_address:"Namangan shahar"
             },
             update: {}
         });
-
         await this.prisma.user.upsert({
             where: { phone: "+998900001122" },
             create: {
